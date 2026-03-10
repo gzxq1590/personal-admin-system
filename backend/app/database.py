@@ -10,10 +10,14 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
+import os
+
 # データベースファイルのパス
-# ここでは、プロジェクトルートに `office_management.db` という名前の
-# SQLiteデータベースファイルを作成します。
-SQLALCHEMY_DATABASE_URL = "sqlite:///./office_management.db"
+# Vercelなどのサーバーレス環境では、書き込み可能な /tmp ディレクトリを使用します。
+if os.environ.get("VERCEL"):
+    SQLALCHEMY_DATABASE_URL = "sqlite:////tmp/office_management.db"
+else:
+    SQLALCHEMY_DATABASE_URL = "sqlite:///./office_management.db"
 
 # データベースエンジンを作成します。
 # `connect_args={"check_same_thread": False}` は、
